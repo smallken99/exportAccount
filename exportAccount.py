@@ -19,16 +19,6 @@ class exportAccount:
 					self.pointMatrix[date] = self.pointMatrix[date] + point
 				else:
 					self.pointMatrix[date] = point			
-			
-			# 輸出帳務資料	
-			if '簽帳卡' in cell[1].value:
-				continue
-			self.o.write(cell[0].value + ',')
-			self.o.write(cell[1].value + ',')
-			self.o.write(cell[2].value + ',')
-			self.o.write(cell[5].value + ',')
-			self.o.write('{0} {1}'.format(cell[3].value.replace(',',' '),cell[4].value) + ',')
-			self.o.write(',\n')
 	def close(self):
 		self.o.close()	
 	def process(self):
