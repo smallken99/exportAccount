@@ -7,6 +7,15 @@ class exportAccount:
 		sh = gc.open('生活雜支')
 		self.wks = sh.worksheet_by_title("生活雜支2")
 		self.pointMatrix = {}
+		self.cell_list = []
+	def filter(self):
+		less_list = []
+		for cell in self.cell_list:
+			if cell[0].value != '' and cell[7].value == '' :
+				less_list.append(cell)
+			elif cell[0].value  == '':
+				break
+		return less_list
 	def getHeadRow(self):
 		return '記錄日期,目的項目,來源項目,異動金額,記錄摘要,詳細備註,發票號碼'
 	def printList(self,lst):
@@ -18,25 +27,24 @@ class exportAccount:
 				if date in self.pointMatrix:
 					self.pointMatrix[date] = self.pointMatrix[date] + point
 				else:
-					self.pointMatrix[date] = point			
+					self.pointMatrix[date] = point
+			# 輸出帳務資料	
+			self.o.write(cell[0].value + ',')
+			self.o.write(cell[1].value + ',')
+			self.o.write(cell[2].value + ',')
+			self.o.write(cell[5].value + ',')
+			self.o.write('{0} {1}'.format(cell[3].value,cell[4].value) + ',')
+			self.o.write(',\n')			
 	def close(self):
 		self.o.close()	
 	def process(self):
-		inputData = input("輸入處理區間: ")
 		# 寫入標題
 		self.o.write(self.getHeadRow() + '\n')
 
 		# 取得雲端生活雜支資料
-		items = inputData.split(",")
-		for item in items:
-			if '-' in item:
-				start = item.split("-")[0]
-				end = item.split("-")[1]
-				cell_list = self.wks.range('A'+start + ':G' + end)
-				self.printList(cell_list)
-			else:
-				cell_list = self.wks.range('A'+item + ':G' + item)
-				self.printList(cell_list)
+		self.cell_list = self.wks.range('A2:H600')
+		self.printList(self.filter())
+		 
 		# 輸出樂天點數帳務
 		for key, value in self.pointMatrix.items():
 			self.o.write(key + ',')
