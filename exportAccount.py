@@ -32,7 +32,7 @@ class exportAccount:
 			self.o.write(cell[0].value + ',')
 			self.o.write(cell[1].value + ',')
 			self.o.write(cell[2].value + ',')
-			self.o.write(cell[5].value + ',')
+			self.o.write(cell[5].value.replace(',','') + ',')
 			self.o.write('{0} {1}'.format(cell[3].value,cell[4].value) + ',')
 			self.o.write(',\n')			
 	def close(self):
@@ -42,14 +42,14 @@ class exportAccount:
 		self.o.write(self.getHeadRow() + '\n')
 
 		# 取得雲端生活雜支資料
-		self.cell_list = self.wks.range('A2:H600')
+		self.cell_list = self.wks.range('A1900:H2500')
 		self.printList(self.filter())
 		 
 		# 輸出樂天點數帳務
 		for key, value in self.pointMatrix.items():
 			self.o.write(key + ',')
 			self.o.write('下月庫存,')
-			self.o.write('其它收入,')
+			self.o.write('網拍收入,')
 			self.o.write(str(value) + ',')
 			self.o.write(key + ' 樂天點數,')
 			self.o.write(',\n')
