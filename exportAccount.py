@@ -42,7 +42,7 @@ class exportAccount:
 		self.o.write(self.getHeadRow() + '\n')
 
 		# 取得雲端生活雜支資料
-		self.cell_list = self.wks.range('A1900:H2500')
+		self.cell_list = self.wks.range('A2000:H3000')
 		self.printList(self.filter())
 		 
 		# 輸出樂天點數帳務
